@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Chronometer mChronometer;
     long timeBeforePause;
     boolean gameover;
+    double finalTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sMgr.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
 
         //initialising game
-        score = 0;
+        score = 99;
         gameover = false;
 
         //chronometer
@@ -121,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(score == 100) {
             if (!gameover) {
                 mChronometer.stop();
-                double t = (double)(SystemClock.elapsedRealtime() - mChronometer.getBase())/1000;
-                Toast toast = Toast.makeText(this, "Your time was: " + t + " seconds", Toast.LENGTH_LONG);
+                finalTime = (double)(SystemClock.elapsedRealtime() - mChronometer.getBase())/1000;
+                Toast toast = Toast.makeText(this, "GAME OVER! Your time was: " + finalTime + " seconds", Toast.LENGTH_LONG);
                 toast.show();
                 gameover = true;
             }
@@ -170,9 +171,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 paint.setColor(Color.GREEN);
                 paint.setTextSize(75);
                 paint.setStrokeWidth(5);
-
-                double t = (double)(SystemClock.elapsedRealtime() - mChronometer.getBase())/1000;//milliseconds to seconds
-                canvas.drawText("FINAL TIME: " + t, 30, screenHeight/2, paint);
+                canvas.drawText("FINAL TIME: " + finalTime, 30, screenHeight/2, paint);
             }
         }
         public void update() {
@@ -185,9 +184,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         public boolean reached(int x,int y) {
             //check if ball's position is within the rectangle's perimeter
-            if ((x + ballRadius) >= this.rectangle.left && x <= this.rectangle.right && (y + ballRadius) >= this.rectangle.top && y <= this.rectangle.bottom){
-                return true;
-            }else return false;
+            return (x + ballRadius) >= this.rectangle.left && x <= this.rectangle.right && (y + ballRadius) >= this.rectangle.top && y <= this.rectangle.bottom;
         }
 
     }
