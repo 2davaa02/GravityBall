@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sMgr.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
 
         //initialising game
-        score = 99;
+        score = 0;
         gameover = false;
 
         //chronometer
